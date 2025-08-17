@@ -1,0 +1,7 @@
+__pycache__
+etiquetas/
+Lib/
+Include/
+Scripts/
+temp/
+pyvenv.cfg
