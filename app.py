@@ -24,7 +24,7 @@ def imprimir_excel():
         return "Arquivo enviado não é um arquivo Excel válido", 400
     
     if not sheet:
-        return "Você precisa selecionar uma Planilha"
+        return "Você precisa selecionar uma Planilha", 400
 
     df = pd.read_excel(arquivo, sheet_name=sheet)
     date = datetime.now()
@@ -62,7 +62,7 @@ def imprimir_big():
         return "Arquivo enviado não é um arquivo Excel válido", 400
 
     if not sheet:
-        return "Você precisa selecionar uma Planilha"
+        return "Você precisa selecionar uma Planilha", 400
 
     df = pd.read_excel(arquivo, sheet_name=sheet)
     date = datetime.now()
