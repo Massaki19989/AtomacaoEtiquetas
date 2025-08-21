@@ -101,10 +101,10 @@ def imprimir_one():
     nome = data.get('name')
     rawPrice = str(data.get('price').replace(',', '.').replace('R$', ''))
     preco = float(rawPrice)
-    quantidade = math.ceil(int(data.get('qtd')) / 2)  # arredonda para cima
     col = data.get('col')
 
     if col == '2':
+        quantidade = math.ceil(int(data.get('qtd')) / 2)  # arredonda para cima
         os.makedirs(f"./etiquetas/{path2col}", exist_ok=True)  # cria o diretório se não existir
         name_img = gerar_imagem_2col(nome, preco, path2col)
         time.sleep(2)
@@ -112,6 +112,7 @@ def imprimir_one():
             imprimir_2cols(name_img, path2col)
         time.sleep(5)
     elif col == '3':
+        quantidade = math.ceil(int(data.get('qtd')) / 3)  # arredonda para cima
         os.makedirs(f"./etiquetas/{path3col}", exist_ok=True)  # cria o diretório se não existir
         name_img = gerar_imagem_3col(nome, preco, path3col)
         time.sleep(2)

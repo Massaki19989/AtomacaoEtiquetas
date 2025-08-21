@@ -4,6 +4,8 @@ from io import BytesIO
 from pdf2image import convert_from_bytes
 from datetime import datetime
 import random
+import sys
+import os
 
 
 def gerar_codigo():
@@ -17,6 +19,14 @@ def gerar_imagem_3col(name_product, price, path):
     # -------------------------------
     # Dimensões da etiqueta
     # -------------------------------
+
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+
+    poppler_path = os.path.join(base_path, 'poppler', 'bin')
+
     code_product = gerar_codigo()
     largura = 34 * mm
     altura = 22 * mm
@@ -92,8 +102,10 @@ def gerar_imagem_3col(name_product, price, path):
     # Logo
     logo_height = altura_preco * 0.7  # altura igual à do preço
     try:
+        logo_dir = os.path.dirname(os.path.abspath(__file__))
+        logo_path = os.path.join(logo_dir, "Logo.png")
         c.drawImage(
-            "Logo.png",
+            logo_path,
             x + largura_preco + 2*mm,  # mesma posição X
             y + 2.5*mm,                # alinhado com o preço
             width=logo_width,          # mesma largura
@@ -110,7 +122,7 @@ def gerar_imagem_3col(name_product, price, path):
     # -------------------------------
     # Converter PDF em PNG (sem bordas brancas)
     # -------------------------------
-    images = convert_from_bytes(pdf_buffer.getvalue(), dpi=203)
+    images = convert_from_bytes(pdf_buffer.getvalue(), dpi=203, poppler_path=poppler_path)
 
     # Salvar a primeira (e única) página como PNG
     output_path = f"./etiquetas/{path}/{name_product}-{code_product}.png"
@@ -118,6 +130,14 @@ def gerar_imagem_3col(name_product, price, path):
     return f"{name_product}-{code_product}"
 
 def gerar_imagem_2col(name_product, price, path):
+
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+
+    poppler_path = os.path.join(base_path, 'poppler', 'bin')
+
     # -------------------------------
     # Dimensões da etiqueta
     # -------------------------------
@@ -196,8 +216,10 @@ def gerar_imagem_2col(name_product, price, path):
     # Logo
     logo_height = altura_preco * 0.7  # altura igual à do preço
     try:
+        logo_dir = os.path.dirname(os.path.abspath(__file__))
+        logo_path = os.path.join(logo_dir, "Logo.png")
         c.drawImage(
-            "Logo.png",
+            logo_path,
             x + largura_preco + 2*mm,  # mesma posição X
             y + 2.5*mm,                # alinhado com o preço
             width=logo_width,          # mesma largura
@@ -214,7 +236,7 @@ def gerar_imagem_2col(name_product, price, path):
     # -------------------------------
     # Converter PDF em PNG (sem bordas brancas)
     # -------------------------------
-    images = convert_from_bytes(pdf_buffer.getvalue(), dpi=203)
+    images = convert_from_bytes(pdf_buffer.getvalue(), dpi=203, poppler_path=poppler_path)
 
     # Salvar a primeira (e única) página como PNG
     output_path = f"./etiquetas/{path}/{name_product}-{code_product}.png"
