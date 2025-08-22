@@ -6,7 +6,7 @@ printer_bp = Blueprint('printer', __name__)
 @printer_bp.route('/', methods=['GET'])
 def list_printers():
     try:
-        return jsonify(PrinterService().get_printer_list()), 200
+        return jsonify(PrinterService.get_printer_list()), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
