@@ -1,0 +1,7 @@
+pandas
+flask
+flask-cors
+reportlab
+pdf2image
+pillow
+pywin32
