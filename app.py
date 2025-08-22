@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 from flask import Flask, request
 from flask_cors import CORS
+from src.controllers.printerController import printer_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +20,7 @@ def imprimir_excel():
 
     arquivo = request.files['excel']
     sheet = request.form.get('sheet')
+    printer = request.form.get('printer')
     
     if not arquivo.filename.endswith('.xlsx'):
         return "Arquivo enviado não é um arquivo Excel válido", 400
@@ -44,7 +46,7 @@ def imprimir_excel():
         name_img = gerar_imagem_3col(nome, preco, path3col)
 
         for i in range(quantidade):
-            imprimir_imagem(name_img, path3col)
+            imprimir_imagem(name_img, path3col, printer)
 
         calc_sleep = (quantidade * 1.2)+5
         time.sleep(calc_sleep)
@@ -59,6 +61,7 @@ def imprimir_big():
 
     arquivo = request.files['excel']
     sheet = request.form.get('sheet')
+    printer = request.form.get('printer')
     
     if not arquivo.filename.endswith('.xlsx'):
         return "Arquivo enviado não é um arquivo Excel válido", 400
@@ -84,7 +87,7 @@ def imprimir_big():
         name_img = gerar_imagem_2col(nome, preco, path2col)
         
         for i in range(quantidade):
-            imprimir_2cols(name_img, path2col)
+            imprimir_2cols(name_img, path2col, printer)
         calc_sleep = (quantidade * 1.2)+5
         time.sleep(calc_sleep)
     
@@ -102,6 +105,7 @@ def imprimir_one():
 
     data = request.get_json()
     nome = data.get('name').upper()
+    printer = data.get('printer')
 
     rawPrice = str(data.get('price').replace(',', '.').replace('R$', ''))
     preco = float(rawPrice)
@@ -121,10 +125,11 @@ def imprimir_one():
         name_img = gerar_imagem_3col(nome, preco, path3col)
         
         for i in range(quantidade):
-            imprimir_imagem(name_img, path3col)
+            imprimir_imagem(name_img, path3col, printer)
     
     return "Impressão concluída com sucesso!", 200
 
+app.register_blueprint(printer_bp, url_prefix='/printers')
+
 if __name__ == "__main__":
-    print("Iniciando o servidor Flask...")
     app.run(debug=True)

@@ -3,8 +3,9 @@ import win32ui
 from PIL import Image, ImageWin
 import os
 
-def imprimir_imagem(nome_imagem, path):
-    printer_name = win32print.GetDefaultPrinter()
+def imprimir_imagem(nome_imagem, path, printer_name=None):
+    if printer_name is None:
+        printer_name = win32print.GetDefaultPrinter()
     img_path = './etiquetas/'+path+'/'+nome_imagem+'.png'
 
     if not os.path.exists(img_path):
@@ -51,8 +52,9 @@ def imprimir_imagem(nome_imagem, path):
     hDC.EndDoc()
     hDC.DeleteDC()
 
-def imprimir_2cols(nome_imagem, path):
-    printer_name = win32print.GetDefaultPrinter()
+def imprimir_2cols(nome_imagem, path, printer_name=None):
+    if printer_name is None:
+        printer_name = win32print.GetDefaultPrinter()
     img_path = './etiquetas/'+path+'/'+nome_imagem+'.png'
 
     if not os.path.exists(img_path):
