@@ -20,6 +20,8 @@ def gerar_imagem_3col(name_product, price, path):
     # Dimensões da etiqueta
     # -------------------------------
 
+    print(name_product)
+
     if getattr(sys, 'frozen', False):
         base_path = sys._MEIPASS
     else:
@@ -125,6 +127,7 @@ def gerar_imagem_3col(name_product, price, path):
     images = convert_from_bytes(pdf_buffer.getvalue(), dpi=203, poppler_path=poppler_path)
 
     # Salvar a primeira (e única) página como PNG
+    name_product = name_product.relace("/", ".")
     output_path = f"./etiquetas/{path}/{name_product}-{code_product}.png"
     images[0].save(output_path, "PNG")
     return f"{name_product}-{code_product}"
@@ -239,6 +242,7 @@ def gerar_imagem_2col(name_product, price, path):
     images = convert_from_bytes(pdf_buffer.getvalue(), dpi=203, poppler_path=poppler_path)
 
     # Salvar a primeira (e única) página como PNG
+    name_product = name_product.relace("/", ".")
     output_path = f"./etiquetas/{path}/{name_product}-{code_product}.png"
     images[0].save(output_path, "PNG")
     return f"{name_product}-{code_product}"

@@ -34,7 +34,7 @@ def imprimir_excel():
     path3col = f"{year}/3 col/{day}-{month}/"
 
     for index, row in df.iterrows():
-        nome = row['Nome']
+        nome = row['Nome'].upper()
         rawPrice = str(row['Valor']).replace(',', '.').replace('R$', '')
         preco = float(rawPrice)
         quantidade = math.ceil(int(row['Quantidade']) / 3)  # arredonda para cima
@@ -42,10 +42,12 @@ def imprimir_excel():
         os.makedirs(f"./etiquetas/{path3col}", exist_ok=True)  # cria o diretório se não existir
 
         name_img = gerar_imagem_3col(nome, preco, path3col)
-        time.sleep(2)
+
         for i in range(quantidade):
             imprimir_imagem(name_img, path3col)
-        time.sleep(5)
+
+        calc_sleep = (quantidade * 1.2)+5
+        time.sleep(calc_sleep)
     
     return "Impressão concluída com sucesso!", 200
 
@@ -72,7 +74,7 @@ def imprimir_big():
     path2col = f"{year}/2 col/{day}-{month}/"
 
     for index, row in df.iterrows():
-        nome = row['Nome']
+        nome = row['Nome'].upper()
         rawPrice = str(row['Valor']).replace(',', '.').replace('R$', "")
         preco = float(rawPrice)
         quantidade = math.ceil(int(row['Quantidade']) / 2)  # arredonda para cima
@@ -80,10 +82,11 @@ def imprimir_big():
         os.makedirs(f"./etiquetas/{path2col}", exist_ok=True)  # cria o diretório se não existir
 
         name_img = gerar_imagem_2col(nome, preco, path2col)
-        time.sleep(2)
+        
         for i in range(quantidade):
             imprimir_2cols(name_img, path2col)
-        time.sleep(5)
+        calc_sleep = (quantidade * 1.2)+5
+        time.sleep(calc_sleep)
     
     return "Impressão concluída com sucesso!", 200
 
@@ -98,7 +101,8 @@ def imprimir_one():
     path3col = f"{year}/3 col/{day}-{month}/"
 
     data = request.get_json()
-    nome = data.get('name')
+    nome = data.get('name').upper()
+
     rawPrice = str(data.get('price').replace(',', '.').replace('R$', ''))
     preco = float(rawPrice)
     col = data.get('col')
@@ -107,20 +111,20 @@ def imprimir_one():
         quantidade = math.ceil(int(data.get('qtd')) / 2)  # arredonda para cima
         os.makedirs(f"./etiquetas/{path2col}", exist_ok=True)  # cria o diretório se não existir
         name_img = gerar_imagem_2col(nome, preco, path2col)
-        time.sleep(2)
+        
         for i in range(quantidade):
             imprimir_2cols(name_img, path2col)
-        time.sleep(5)
+            
     elif col == '3':
         quantidade = math.ceil(int(data.get('qtd')) / 3)  # arredonda para cima
         os.makedirs(f"./etiquetas/{path3col}", exist_ok=True)  # cria o diretório se não existir
         name_img = gerar_imagem_3col(nome, preco, path3col)
-        time.sleep(2)
+        
         for i in range(quantidade):
             imprimir_imagem(name_img, path3col)
-        time.sleep(5)
     
     return "Impressão concluída com sucesso!", 200
 
 if __name__ == "__main__":
+    print("Iniciando o servidor Flask...")
     app.run(debug=True)
