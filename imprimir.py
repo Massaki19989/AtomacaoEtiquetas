@@ -38,7 +38,7 @@ def imprimir_imagem(nome_imagem, path, printer_name=None):
 
     hDC = win32ui.CreateDC()
     hDC.CreatePrinterDC(printer_name)
-    hDC.StartDoc("Etiqueta")
+    hDC.StartDoc("Etiqueta:"+nome_imagem)
     hDC.StartPage()
 
     for linha in range(num_linhas):
@@ -87,7 +87,7 @@ def imprimir_2cols(nome_imagem, path, printer_name=None):
 
     hDC = win32ui.CreateDC()
     hDC.CreatePrinterDC(printer_name)
-    hDC.StartDoc("Etiqueta")
+    hDC.StartDoc("Etiqueta:"+nome_imagem)
     hDC.StartPage()
 
     for linha in range(num_linhas):

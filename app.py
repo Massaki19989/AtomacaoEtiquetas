@@ -39,17 +39,24 @@ def imprimir_excel():
         nome = row['Nome'].upper()
         rawPrice = str(row['Valor']).replace(',', '.').replace('R$', '')
         preco = float(rawPrice)
-        quantidade = math.ceil(int(row['Quantidade']) / 3)  # arredonda para cima
+        quantidade = math.ceil(int(row['Quantidade']) / 3) 
+        if 'Abreviação' in df.columns:
+            if not pd.isna(row['Abreviação']) and str(row['Abreviação']).strip() != '':
+                nome = str(row['Abreviação']).upper()
+        
+        if quantidade >= 1:
 
-        os.makedirs(f"./etiquetas/{path3col}", exist_ok=True)  # cria o diretório se não existir
+            os.makedirs(f"./etiquetas/{path3col}", exist_ok=True)
 
-        name_img = gerar_imagem_3col(nome, preco, path3col)
+            name_img = gerar_imagem_3col(nome, preco, path3col)
 
-        for i in range(quantidade):
-            imprimir_imagem(name_img, path3col, printer)
+            for i in range(quantidade):
+                imprimir_imagem(name_img, path3col, printer)
 
-        calc_sleep = (quantidade * 1.2)+5
-        time.sleep(calc_sleep)
+            calc_sleep = (quantidade * 1.2)+5
+            time.sleep(calc_sleep)
+        else:
+            pass
     
     return "Impressão concluída com sucesso!", 200
 
@@ -81,15 +88,23 @@ def imprimir_big():
         rawPrice = str(row['Valor']).replace(',', '.').replace('R$', "")
         preco = float(rawPrice)
         quantidade = math.ceil(int(row['Quantidade']) / 2)  # arredonda para cima
+        if 'Abreviação' in df.columns:
+            if row['Abreviação'] is not None:
+                if not pd.isna(row['Abreviação']) and str(row['Abreviação']).strip() != '':
+                    nome = str(row['Abreviação']).upper()
 
-        os.makedirs(f"./etiquetas/{path2col}", exist_ok=True)  # cria o diretório se não existir
+        if quantidade >= 1:
 
-        name_img = gerar_imagem_2col(nome, preco, path2col)
-        
-        for i in range(quantidade):
-            imprimir_2cols(name_img, path2col, printer)
-        calc_sleep = (quantidade * 1.2)+5
-        time.sleep(calc_sleep)
+            os.makedirs(f"./etiquetas/{path2col}", exist_ok=True)  # cria o diretório se não existir
+
+            name_img = gerar_imagem_2col(nome, preco, path2col)
+            
+            for i in range(quantidade):
+                imprimir_2cols(name_img, path2col, printer)
+            calc_sleep = (quantidade * 1.2)+5
+            time.sleep(calc_sleep)
+        else:
+            pass
     
     return "Impressão concluída com sucesso!", 200
 
