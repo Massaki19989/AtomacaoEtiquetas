@@ -8,6 +8,7 @@ import os
 from flask import Flask, request
 from flask_cors import CORS
 from src.controllers.printerController import printer_bp
+from src.controllers.excelController import excel_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -145,6 +146,7 @@ def imprimir_one():
     return "Impressão concluída com sucesso!", 200
 
 app.register_blueprint(printer_bp, url_prefix='/printers')
+app.register_blueprint(excel_bp, url_prefix='/excel')
 
 if __name__ == "__main__":
     app.run(debug=True)
